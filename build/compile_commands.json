@@ -1,0 +1,42 @@
+[
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/derivs.c.o   -c /home/u24658ly/projects/rk4/derivs.c",
+  "file": "/home/u24658ly/projects/rk4/derivs.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/main.c.o   -c /home/u24658ly/projects/rk4/main.c",
+  "file": "/home/u24658ly/projects/rk4/main.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/nrutil.c.o   -c /home/u24658ly/projects/rk4/nrutil.c",
+  "file": "/home/u24658ly/projects/rk4/nrutil.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/odeint.c.o   -c /home/u24658ly/projects/rk4/odeint.c",
+  "file": "/home/u24658ly/projects/rk4/odeint.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/rk4.c.o   -c /home/u24658ly/projects/rk4/rk4.c",
+  "file": "/home/u24658ly/projects/rk4/rk4.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/rkck.c.o   -c /home/u24658ly/projects/rk4/rkck.c",
+  "file": "/home/u24658ly/projects/rk4/rkck.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/rkdumb.c.o   -c /home/u24658ly/projects/rk4/rkdumb.c",
+  "file": "/home/u24658ly/projects/rk4/rkdumb.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/rkqs.c.o   -c /home/u24658ly/projects/rk4/rkqs.c",
+  "file": "/home/u24658ly/projects/rk4/rkqs.c"
+}
+]
