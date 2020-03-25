@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 #include "nrutil.h"
 #include "rkqs.h"
 #include "odeint.h"
@@ -27,6 +28,9 @@ double **yp, *xp;
 double *vstart;
 double x1, x2;
 double dxsav =  1e-4;
+double eps = 1e-3;
+double h1 = 1e-3;
+double hmin = 1e-40;
 /*
 const double k1 = 1.55e8;
 const double k2 = 1e-2;
@@ -55,7 +59,6 @@ void init(char* input_file)
     printf("vstart created.\n");
     #endif
     FILE *file = fopen(input_file, "r");
-    printf("%s\n", input_file);
     //initial concentrations
     fscanf(file, "%lf", &k1);
     fscanf(file, "%lf", &k2);
@@ -70,19 +73,10 @@ void init(char* input_file)
     //start and end time of simulation
     fscanf(file, "%lf", &x1);
     fscanf(file, "%lf", &x2);
+    fscanf(file, "%lf", &eps);
+    fscanf(file, "%lf", &h1);
+    fscanf(file, "%lf", &hmin);
 
-    printf("k1 = %lf\n", k1);
-    printf("k2 = %lf\n", k2);
-    printf("k3 = %lf\n", k3);
-    printf("k4 = %lf\n", k4);
-    printf("k5 = %lf\n", k5);
-    printf("length = %lf\n", length);
-    printf("[NO] = %lf\n", vstart[1]);
-    printf("[sGC] = %lf\n", vstart[2]);
-    printf("[6C-sGC-NO] = %lf\n", vstart[3]);
-    printf("[5C-sGC-NO] = %lf\n", vstart[4]);
-    printf("t0 = %lf\n", x1);
-    printf("t1 = %lf\n", x2);
     xp = vector(1, kmax);
     #ifdef DEBUG
     printf("xp created.\n");
@@ -90,17 +84,8 @@ void init(char* input_file)
     fclose(file);
 }
 
-void save_results(char* postfix)
+void save_results(char* filename)
 {
-    char const *prefix = "results";
-    char const *extension = ".csv";
-    static const int filename_maximum_length = 100;
-    /*
-    char string_icase[8] = "0";
-    itoa(icase, string_icase, 10);
-    */
-    char filename[filename_maximum_length];
-    sprintf(filename, "%s%s%s\0", prefix, postfix, extension);
     FILE *file = fopen(filename, "w");
     
     if (file == NULL) return;
@@ -143,17 +128,12 @@ argv[]:
 */
 int main(int argc, char *argv[])
 {
-    printf("%d ", argc);
-    for (int i=0; i<argc; i++)
-        printf("%s ", argv[i]);
+    clock_t start_odeint, end_odeint, start_save, end_save;
+    double time_odeint, time_save;
     #ifdef DEBUG
     printf("In main.\n");
     #endif
-    printf("strlen() = %d ", strlen(argv[1]));
     init(argv[1]);
-    double eps = 1e-3;
-    double h1 = 1e-3;
-    double hmin = 1e-40;
     #ifdef DEBUG
         printf("k1 = %lf\nk2 = %lf\nk3 = %lf\nk4 = %lf\nk5 = %lf\nlength = %lf\n",
         k1, k2, k3, k4, k5, length);
@@ -161,15 +141,25 @@ int main(int argc, char *argv[])
     nvar, x1, x2, eps, h1, hmin);
         printf("\n");
     #endif
+    start_odeint = clock();
     odeint(vstart, nvar, x1, x2, eps, h1, hmin, &nok, &nbad,
         derivs,
         rkqs);
+    end_odeint = clock();
+    time_odeint = (double)(end_odeint - start_odeint)/CLOCKS_PER_SEC;
+
     #ifdef DEBUG
         printf("odeint completed.\n");
     #endif
+    start_save = clock();
     save_results(argv[2]);
+    end_save = clock();
+    time_save = (double)(end_save-start_save)/CLOCKS_PER_SEC;
     free_space();
-    
+    char path[]="nok_and_nbad.txt\0";
+    FILE *file = fopen(path, "w");
+    fprintf(file, "%d\n%d\n%lf\n%lf", nok, nbad, time_odeint, time_save);
+    fclose(file);
     #ifdef DEBUG
         printf("Calculation complete!\n");
     #endif
