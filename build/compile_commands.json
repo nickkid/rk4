@@ -6,6 +6,11 @@
 },
 {
   "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/loadcsv.c.o   -c /home/u24658ly/projects/rk4/loadcsv.c",
+  "file": "/home/u24658ly/projects/rk4/loadcsv.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
   "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/main.c.o   -c /home/u24658ly/projects/rk4/main.c",
   "file": "/home/u24658ly/projects/rk4/main.c"
 },
@@ -18,6 +23,11 @@
   "directory": "/home/u24658ly/projects/rk4/build",
   "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/odeint.c.o   -c /home/u24658ly/projects/rk4/odeint.c",
   "file": "/home/u24658ly/projects/rk4/odeint.c"
+},
+{
+  "directory": "/home/u24658ly/projects/rk4/build",
+  "command": "/usr/bin/gcc-7   -g   -o CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o   -c /home/u24658ly/projects/rk4/odeint_with_experiment_data.c",
+  "file": "/home/u24658ly/projects/rk4/odeint_with_experiment_data.c"
 },
 {
   "directory": "/home/u24658ly/projects/rk4/build",

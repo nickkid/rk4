@@ -6,21 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/u24658ly/projects/rk4/derivs.c
+/home/u24658ly/projects/rk4/derivs.cpp
 
 /home/u24658ly/projects/rk4/derivs.h
 
-/home/u24658ly/projects/rk4/loadcsv.c
-stdio.h
--
-nrutil.h
-/home/u24658ly/projects/rk4/nrutil.h
-loadcsv.h
-/home/u24658ly/projects/rk4/loadcsv.h
-
-/home/u24658ly/projects/rk4/loadcsv.h
-
-/home/u24658ly/projects/rk4/main.c
+/home/u24658ly/projects/rk4/main.cpp
 stdio.h
 -
 math.h
@@ -37,10 +27,8 @@ odeint.h
 /home/u24658ly/projects/rk4/odeint.h
 derivs.h
 /home/u24658ly/projects/rk4/derivs.h
-loadcsv.h
-/home/u24658ly/projects/rk4/loadcsv.h
 
-/home/u24658ly/projects/rk4/nrutil.c
+/home/u24658ly/projects/rk4/nrutil.cpp
 stdio.h
 -
 stddef.h
@@ -52,7 +40,7 @@ stdio.h
 
 /home/u24658ly/projects/rk4/nrutil.h
 
-/home/u24658ly/projects/rk4/odeint.c
+/home/u24658ly/projects/rk4/odeint.cpp
 math.h
 -
 odeint.h
@@ -64,25 +52,13 @@ stdio.h
 
 /home/u24658ly/projects/rk4/odeint.h
 
-/home/u24658ly/projects/rk4/odeint_with_experiment_data.c
-math.h
--
-odeint_with_experiment_data.h
-/home/u24658ly/projects/rk4/odeint_with_experiment_data.h
-nrutil.h
-/home/u24658ly/projects/rk4/nrutil.h
-stdio.h
--
-
-/home/u24658ly/projects/rk4/odeint_with_experiment_data.h
-
-/home/u24658ly/projects/rk4/rk4.c
+/home/u24658ly/projects/rk4/rk4.cpp
 nrutil.h
 /home/u24658ly/projects/rk4/nrutil.h
 
 /home/u24658ly/projects/rk4/rk4.h
 
-/home/u24658ly/projects/rk4/rkck.c
+/home/u24658ly/projects/rk4/rkck.cpp
 nrutil.h
 /home/u24658ly/projects/rk4/nrutil.h
 rkck.h
@@ -92,13 +68,13 @@ stdio.h
 
 /home/u24658ly/projects/rk4/rkck.h
 
-/home/u24658ly/projects/rk4/rkdumb.c
+/home/u24658ly/projects/rk4/rkdumb.cpp
 nrutil.h
 /home/u24658ly/projects/rk4/nrutil.h
 rk4.h
 /home/u24658ly/projects/rk4/rk4.h
 
-/home/u24658ly/projects/rk4/rkqs.c
+/home/u24658ly/projects/rk4/rkqs.cpp
 math.h
 -
 rkqs.h

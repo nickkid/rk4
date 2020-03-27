@@ -6,6 +6,7 @@
 #include "rkqs.h"
 #include "odeint.h"
 #include "derivs.h"
+#include "loadcsv.h"
 //#define DEBUG
 
 //#define DEBUG
@@ -24,6 +25,7 @@ int nok, nbad, kount;
 int kmax = 10000000;
 int current_case = 0;
 
+double **data = NULL;
 double **yp, *xp;
 double *vstart;
 double x1, x2;
@@ -133,35 +135,52 @@ int main(int argc, char *argv[])
     #ifdef DEBUG
     printf("In main.\n");
     #endif
-    init(argv[1]);
-    #ifdef DEBUG
-        printf("k1 = %lf\nk2 = %lf\nk3 = %lf\nk4 = %lf\nk5 = %lf\nlength = %lf\n",
-        k1, k2, k3, k4, k5, length);
-        printf("nvar = %d\nx1 = %f\nx2 = %f\neps = %g\nh1 = %g\nhmin = %g\n",
-    nvar, x1, x2, eps, h1, hmin);
-        printf("\n");
-    #endif
-    start_odeint = clock();
-    odeint(vstart, nvar, x1, x2, eps, h1, hmin, &nok, &nbad,
-        derivs,
-        rkqs);
-    end_odeint = clock();
-    time_odeint = (double)(end_odeint - start_odeint)/CLOCKS_PER_SEC;
+    printf("argc == %d\n", argc);
+    if (argc == 3) // no experiment data to be compared
+    {
+        init(argv[1]);
+        #ifdef DEBUG
+            printf("k1 = %lf\nk2 = %lf\nk3 = %lf\nk4 = %lf\nk5 = %lf\nlength = %lf\n",
+            k1, k2, k3, k4, k5, length);
+            printf("nvar = %d\nx1 = %f\nx2 = %f\neps = %g\nh1 = %g\nhmin = %g\n",
+        nvar, x1, x2, eps, h1, hmin);
+            printf("\n");
+        #endif
+        start_odeint = clock();
+        odeint(vstart, nvar, x1, x2, eps, h1, hmin, &nok, &nbad,
+            derivs,
+            rkqs);
+        end_odeint = clock();
+        time_odeint = (double)(end_odeint - start_odeint)/CLOCKS_PER_SEC;
 
-    #ifdef DEBUG
-        printf("odeint completed.\n");
-    #endif
-    start_save = clock();
-    save_results(argv[2]);
-    end_save = clock();
-    time_save = (double)(end_save-start_save)/CLOCKS_PER_SEC;
-    free_space();
-    char path[]="nok_and_nbad.txt\0";
-    FILE *file = fopen(path, "w");
-    fprintf(file, "%d\n%d\n%lf\n%lf", nok, nbad, time_odeint, time_save);
-    fclose(file);
-    #ifdef DEBUG
-        printf("Calculation complete!\n");
-    #endif
+        #ifdef DEBUG
+            printf("odeint completed.\n");
+        #endif
+        start_save = clock();
+        save_results(argv[2]);
+        end_save = clock();
+        time_save = (double)(end_save-start_save)/CLOCKS_PER_SEC;
+        free_space();
+        char path[]="nok_and_nbad.txt\0";
+        FILE *file = fopen(path, "w");
+        fprintf(file, "%d\n%d\n%lf\n%lf", nok, nbad, time_odeint, time_save);
+        fclose(file);
+        #ifdef DEBUG
+            printf("Calculation complete!\n");
+        #endif
+    }
+
+    if (argc == 4) // need to compare with experiment data and consider timestep fitting during simulation
+    {
+        int number_of_samples = 0;
+        data = loadcsv(argv[3], &number_of_samples);
+        printf("number of samples is %d.\n", number_of_samples);
+        printf("address of data in main is %d.\n", data);
+        for (int i = 1; i <= number_of_samples; i++)
+            printf("%lf,%lf\n", data[i][1], data[i][2]);
+        
+        free_matrix(data, 1, number_of_samples, 1, 2);
+        
+    }
     return 0;
 }
