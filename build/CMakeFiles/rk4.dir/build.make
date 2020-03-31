@@ -177,33 +177,9 @@ CMakeFiles/rk4.dir/odeint.c.o.provides: CMakeFiles/rk4.dir/odeint.c.o.requires
 CMakeFiles/rk4.dir/odeint.c.o.provides.build: CMakeFiles/rk4.dir/odeint.c.o
 
 
-CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o: CMakeFiles/rk4.dir/flags.make
-CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o: ../odeint_with_experiment_data.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o"
-	/usr/bin/gcc-7 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o   -c /home/u24658ly/projects/rk4/odeint_with_experiment_data.c
-
-CMakeFiles/rk4.dir/odeint_with_experiment_data.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rk4.dir/odeint_with_experiment_data.c.i"
-	/usr/bin/gcc-7 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/u24658ly/projects/rk4/odeint_with_experiment_data.c > CMakeFiles/rk4.dir/odeint_with_experiment_data.c.i
-
-CMakeFiles/rk4.dir/odeint_with_experiment_data.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rk4.dir/odeint_with_experiment_data.c.s"
-	/usr/bin/gcc-7 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/u24658ly/projects/rk4/odeint_with_experiment_data.c -o CMakeFiles/rk4.dir/odeint_with_experiment_data.c.s
-
-CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o.requires:
-
-.PHONY : CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o.requires
-
-CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o.provides: CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o.requires
-	$(MAKE) -f CMakeFiles/rk4.dir/build.make CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o.provides.build
-.PHONY : CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o.provides
-
-CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o.provides.build: CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o
-
-
 CMakeFiles/rk4.dir/rk4.c.o: CMakeFiles/rk4.dir/flags.make
 CMakeFiles/rk4.dir/rk4.c.o: ../rk4.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/rk4.dir/rk4.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/rk4.dir/rk4.c.o"
 	/usr/bin/gcc-7 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/rk4.dir/rk4.c.o   -c /home/u24658ly/projects/rk4/rk4.c
 
 CMakeFiles/rk4.dir/rk4.c.i: cmake_force
@@ -227,7 +203,7 @@ CMakeFiles/rk4.dir/rk4.c.o.provides.build: CMakeFiles/rk4.dir/rk4.c.o
 
 CMakeFiles/rk4.dir/rkck.c.o: CMakeFiles/rk4.dir/flags.make
 CMakeFiles/rk4.dir/rkck.c.o: ../rkck.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/rk4.dir/rkck.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/rk4.dir/rkck.c.o"
 	/usr/bin/gcc-7 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/rk4.dir/rkck.c.o   -c /home/u24658ly/projects/rk4/rkck.c
 
 CMakeFiles/rk4.dir/rkck.c.i: cmake_force
@@ -251,7 +227,7 @@ CMakeFiles/rk4.dir/rkck.c.o.provides.build: CMakeFiles/rk4.dir/rkck.c.o
 
 CMakeFiles/rk4.dir/rkdumb.c.o: CMakeFiles/rk4.dir/flags.make
 CMakeFiles/rk4.dir/rkdumb.c.o: ../rkdumb.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/rk4.dir/rkdumb.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/rk4.dir/rkdumb.c.o"
 	/usr/bin/gcc-7 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/rk4.dir/rkdumb.c.o   -c /home/u24658ly/projects/rk4/rkdumb.c
 
 CMakeFiles/rk4.dir/rkdumb.c.i: cmake_force
@@ -275,7 +251,7 @@ CMakeFiles/rk4.dir/rkdumb.c.o.provides.build: CMakeFiles/rk4.dir/rkdumb.c.o
 
 CMakeFiles/rk4.dir/rkqs.c.o: CMakeFiles/rk4.dir/flags.make
 CMakeFiles/rk4.dir/rkqs.c.o: ../rkqs.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/rk4.dir/rkqs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/rk4.dir/rkqs.c.o"
 	/usr/bin/gcc-7 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/rk4.dir/rkqs.c.o   -c /home/u24658ly/projects/rk4/rkqs.c
 
 CMakeFiles/rk4.dir/rkqs.c.i: cmake_force
@@ -304,7 +280,6 @@ rk4_OBJECTS = \
 "CMakeFiles/rk4.dir/main.c.o" \
 "CMakeFiles/rk4.dir/nrutil.c.o" \
 "CMakeFiles/rk4.dir/odeint.c.o" \
-"CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o" \
 "CMakeFiles/rk4.dir/rk4.c.o" \
 "CMakeFiles/rk4.dir/rkck.c.o" \
 "CMakeFiles/rk4.dir/rkdumb.c.o" \
@@ -318,14 +293,13 @@ rk4: CMakeFiles/rk4.dir/loadcsv.c.o
 rk4: CMakeFiles/rk4.dir/main.c.o
 rk4: CMakeFiles/rk4.dir/nrutil.c.o
 rk4: CMakeFiles/rk4.dir/odeint.c.o
-rk4: CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o
 rk4: CMakeFiles/rk4.dir/rk4.c.o
 rk4: CMakeFiles/rk4.dir/rkck.c.o
 rk4: CMakeFiles/rk4.dir/rkdumb.c.o
 rk4: CMakeFiles/rk4.dir/rkqs.c.o
 rk4: CMakeFiles/rk4.dir/build.make
 rk4: CMakeFiles/rk4.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking C executable rk4"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/u24658ly/projects/rk4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking C executable rk4"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rk4.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -338,7 +312,6 @@ CMakeFiles/rk4.dir/requires: CMakeFiles/rk4.dir/loadcsv.c.o.requires
 CMakeFiles/rk4.dir/requires: CMakeFiles/rk4.dir/main.c.o.requires
 CMakeFiles/rk4.dir/requires: CMakeFiles/rk4.dir/nrutil.c.o.requires
 CMakeFiles/rk4.dir/requires: CMakeFiles/rk4.dir/odeint.c.o.requires
-CMakeFiles/rk4.dir/requires: CMakeFiles/rk4.dir/odeint_with_experiment_data.c.o.requires
 CMakeFiles/rk4.dir/requires: CMakeFiles/rk4.dir/rk4.c.o.requires
 CMakeFiles/rk4.dir/requires: CMakeFiles/rk4.dir/rkck.c.o.requires
 CMakeFiles/rk4.dir/requires: CMakeFiles/rk4.dir/rkdumb.c.o.requires

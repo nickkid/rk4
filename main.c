@@ -25,7 +25,9 @@ int nok, nbad, kount;
 int kmax = 10000000;
 int current_case = 0;
 
+int number_of_samples = 0;
 double **data = NULL;
+
 double **yp, *xp;
 double *vstart;
 double x1, x2;
@@ -117,10 +119,20 @@ void save_results(char* filename)
     return ;
 }
 
-void free_space()
+double calculate_std()
 {
-    free_matrix(yp, 1, nvar, 1, kmax);
-    free_vector(xp, 1, kmax);
+    double std = 0;
+    for (int istep=1; istep <= kount; istep ++)
+    {
+        double Absorbance = 0;
+        for (int ivar=2; ivar <= nvar; ivar ++)
+            Absorbance += epsilons[ivar-2] * yp[ivar][istep];
+        Absorbance *= length;
+        double difference = Absorbance - data[istep][2];
+        std += (Absorbance * Absorbance);
+    }
+    std = sqrt(std/number_of_samples);
+    return std;
 }
 /*
 argv[]:
@@ -130,57 +142,47 @@ argv[]:
 */
 int main(int argc, char *argv[])
 {
-    clock_t start_odeint, end_odeint, start_save, end_save;
-    double time_odeint, time_save;
     #ifdef DEBUG
     printf("In main.\n");
     #endif
-    printf("argc == %d\n", argc);
-    if (argc == 3) // no experiment data to be compared
-    {
-        init(argv[1]);
-        #ifdef DEBUG
-            printf("k1 = %lf\nk2 = %lf\nk3 = %lf\nk4 = %lf\nk5 = %lf\nlength = %lf\n",
-            k1, k2, k3, k4, k5, length);
-            printf("nvar = %d\nx1 = %f\nx2 = %f\neps = %g\nh1 = %g\nhmin = %g\n",
-        nvar, x1, x2, eps, h1, hmin);
-            printf("\n");
-        #endif
-        start_odeint = clock();
-        odeint(vstart, nvar, x1, x2, eps, h1, hmin, &nok, &nbad,
-            derivs,
-            rkqs);
-        end_odeint = clock();
-        time_odeint = (double)(end_odeint - start_odeint)/CLOCKS_PER_SEC;
 
-        #ifdef DEBUG
-            printf("odeint completed.\n");
-        #endif
-        start_save = clock();
+    init(argv[1]);
+    #ifdef DEBUG
+        printf("k1 = %lf\nk2 = %lf\nk3 = %lf\nk4 = %lf\nk5 = %lf\nlength = %lf\n",
+        k1, k2, k3, k4, k5, length);
+        printf("nvar = %d\nx1 = %f\nx2 = %f\neps = %g\nh1 = %g\nhmin = %g\n",
+    nvar, x1, x2, eps, h1, hmin);
+        printf("\n");
+    #endif
+    if (argc == 4) data = loadcsv(argv[3]);
+    clock_t start_odeint = clock();
+    odeint(vstart, nvar, x1, x2, eps, h1, hmin, &nok, &nbad,
+        derivs,
+        rkqs);
+    clock_t time_odeint= clock() - start_odeint;
+
+    #ifdef DEBUG
+        printf("odeint completed.\n");
+    #endif
+    if (!number_of_samples)
+    {
+        clock_t start_save = clock();
         save_results(argv[2]);
-        end_save = clock();
-        time_save = (double)(end_save-start_save)/CLOCKS_PER_SEC;
-        free_space();
-        char path[]="nok_and_nbad.txt\0";
-        FILE *file = fopen(path, "w");
-        fprintf(file, "%d\n%d\n%lf\n%lf", nok, nbad, time_odeint, time_save);
-        fclose(file);
-        #ifdef DEBUG
-            printf("Calculation complete!\n");
-        #endif
+        clock_t time_save = clock() - start_save;
+        fprintf(stdout, "%e\n", (double)(time_odeint + time_save)/CLOCKS_PER_SEC);
     }
-
-    if (argc == 4) // need to compare with experiment data and consider timestep fitting during simulation
+    else
     {
-        int number_of_samples = 0;
-        data = loadcsv(argv[3], &number_of_samples);
-        printf("number of samples is %d.\n", number_of_samples);
-        printf("address of data in main is %d.\n", data);
-        for (int i = 1; i <= number_of_samples; i++)
-            printf("%lf,%lf\n", data[i][1], data[i][2]);
-        
-        free_matrix(data, 1, number_of_samples, 1, 2);
-        
+        clock_t start_calculate_std = clock();
+        double std = calculate_std();
+        clock_t time_calculate_std = clock() - start_calculate_std;
+        fprintf(stdout, "%e,%e\n", std, (double)(time_odeint + time_calculate_std)/CLOCKS_PER_SEC);
+        free_matrix(data, 1, number_of_samples, 1, 6);
     }
+    free_matrix(yp, 1, nvar, 1, kmax);
+    free_vector(xp, 1, kmax);
+    #ifdef DEBUG
+        printf("Calculation complete!\n");
+    #endif
     return 0;
 }

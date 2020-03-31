@@ -5,7 +5,8 @@
 const int MAX_SAMPLE_NUMBER = 10000;
 const int NUMBER_OF_COLUMNS = 2;
 
-double **loadcsv(char* filename, int *number_of_samples)
+extern int number_of_samples;
+double **loadcsv(char* filename)
 {
     //printf("csv file path is %s.\n", filename);
     FILE *file = fopen(filename, "r");
@@ -17,7 +18,6 @@ double **loadcsv(char* filename, int *number_of_samples)
     double time, absorbance;
     int counter = 0;
     fscanf(file, "%s\n", header_buffer);
-    printf("header line is %s\n", header_buffer);
     while (fscanf(file, "%lf,%lf\n", &time, &absorbance) != EOF)
     {
         counter++;
@@ -28,7 +28,7 @@ double **loadcsv(char* filename, int *number_of_samples)
     }
     fclose(file);
 
-    *number_of_samples = counter;
+    number_of_samples = counter;
     data = matrix(1, counter, 1, NUMBER_OF_COLUMNS);
     for (int i = 1; i <= counter; i++)
     {
@@ -37,9 +37,5 @@ double **loadcsv(char* filename, int *number_of_samples)
         //if(i < 10) printf("%lf,%lf\n", data[i][0], data[i][1]);
     }
     free_matrix(buffer, 1, MAX_SAMPLE_NUMBER, 1, NUMBER_OF_COLUMNS);
-    
-    printf("address of data in loadcsv is %d.\n", data);
-    for (int i = 1; i <= 10; i++) printf("%lf,%lf\n", data[i][1], data[i][2]);
-    
     return data;
 }

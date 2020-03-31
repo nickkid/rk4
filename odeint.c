@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdio.h>
 #include "odeint.h"
 #include "nrutil.h"
 
@@ -14,7 +15,9 @@
 #define TINY 1.0e-30
 
 extern int kmax, kount;
+extern int number_of_samples;
 extern double *xp, **yp, dxsav;
+extern double **data;
 /*
 User storage for intermediate results. Preset kmax and dxsav in the calling program. If kmax ?= 
 0 results are stored at approximate intervals dxsav in the arrays xp[1..kount], yp[1..nvar][1..kount], 
@@ -37,7 +40,6 @@ void odeint(double ystart[], int nvar, double x1, double x2, double eps, double 
     void (*derivs)(double, double [], double []),
     void (*rkqs)(double [], double [], int, double *, double, double, double [],
     double *, double *, void (*)(double, double [], double [])))
-
 {
     #ifdef DEBUG
     printf("\nIn odeint.\n");
@@ -48,7 +50,9 @@ void odeint(double ystart[], int nvar, double x1, double x2, double eps, double 
     int nstp,i;
     double xsav,x,hnext,hdid,h;
     double *yscal,*y,*dydx;
-    
+    int index_xnext_in_data = 1;
+    int number_of_time_in_data = 0;
+
     yscal = vector(1, nvar);
     y = vector(1, nvar);
     dydx = vector(1, nvar);
@@ -73,13 +77,36 @@ void odeint(double ystart[], int nvar, double x1, double x2, double eps, double 
         for (i=1; i <= nvar; i++)
         //Scaling used to monitor accuracy. This general-purpose choice can be modified if need be.
             yscal[i] = fabs(y[i]) + fabs(dydx[i]*h) + TINY;
-        if (kmax > 0 && kount < kmax-1 && fabs(x-xsav) > fabs(dxsav))
+        if (kmax > 0 && kount < kmax-1)
         {
-            xp[++kount] = x;//Store intermediate results.
-            for (i=1; i <= nvar; i++) yp[i][kount]=y[i];
-            xsav=x;
+            if (number_of_samples)
+            {
+                if (number_of_samples >= index_xnext_in_data && fabs(x-data[index_xnext_in_data][1]) <= 0)
+                {
+                    xp[++kount] = x;//Store intermediate results.
+                    for (i=1; i <= nvar; i++) yp[i][kount]=y[i];
+                    xsav=x;
+                    index_xnext_in_data ++;
+                    //printf("save = %e\n", xsav);
+                    //printf("%d\n", ++number_of_time_in_data);
+                }
+            }
+            else if (fabs(x-xsav) > fabs(dxsav))
+            {
+                xp[++kount] = x;//Store intermediate results.
+                for (i=1; i <= nvar; i++) yp[i][kount]=y[i];
+                xsav=x;
+                //printf("save = %e\n", xsav);
+            }
         }
+        
         if ((x+h-x2)*(x+h-x1) > 0.0) h=x2-x;//If stepsize can overshoot, decrease.
+        if (number_of_samples && number_of_samples >= index_xnext_in_data)
+        {
+            double xtemp = data[index_xnext_in_data][1];
+            if ((x+h-xtemp)*(x+h-x1) > 0.0) h=xtemp-x;
+        }
+        //if (h < hmin) printf("h = %e\n", h);
         (*rkqs)(y,dydx,nvar,&x,h,eps,yscal,&hdid,&hnext,derivs);
         #ifdef DEBUG
             printf("rkqs in odeint iteration %d completed.\n", nstp);
@@ -101,8 +128,9 @@ void odeint(double ystart[], int nvar, double x1, double x2, double eps, double 
         #ifdef DEBUG
         printf("hnext = %g\nhmin = %g\n", hnext, hmin);
         #endif
-        if (fabs(hnext) <= hmin) nrerror("Step size too small in odeint");
+        if (fabs(hnext) <= hmin) hnext = hmin;
         h=hnext;
     }
+    printf("%d\n", number_of_time_in_data);
     nrerror("Too many steps in routine odeint");
 }

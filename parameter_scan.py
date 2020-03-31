@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import subprocess
+import os
+import time
 from multiprocessing import Pool
 '''
 0. global constant definitions
 '''
 rk4_path = './rk4'
-experiment_data_path = '/home/u24658ly/Dropbox/lab/lab_data_in_paper1.csv'
+experiment_data_path = ['/home/u24658ly/Dropbox/lab/lab_data_in_paper1.csv',
+'/home/u24658ly/Dropbox/lab/lab_data_in_paper2.csv']
 number_of_process = 8
 number_of_iteration = 10000
-concentration_of_NO = 1.53e-6
-concentration_of_sGC = 0.47e-6
+concentration_of_NO = [1.53e-6, 6.6e-6]
+concentration_of_sGC = [0.47e-6, 0.47e-6]
 concentration_of_6C = 0
 concentration_of_5C = 0
 length_of_optical_cell = 1
@@ -42,6 +45,11 @@ upper_bound_of_k[3] = 1e2
 lower_bound_of_k[4] = 1e-8
 upper_bound_of_k[4] = 1e2
 
+sample_of_k = np.zeros((number_of_iteration, number_of_k))
+std_summary = np.zeros((number_of_iteration,9))
+std_summary_filename = 'std_summary.csv'
+log_interval = 100
+
 '''
 input_content: string
 input_filename: string
@@ -50,11 +58,29 @@ result_filename: string
 create input file for rk4 executable and call rk4 with argument input_filename, result_filename.
 
 '''
-def run_simulation(input_content, input_filename, result_filename):
+def run_simulation(input_content, input_filename, result_filename, experiment_data_path, index, array_of_k, program_start_time):
     with open(input_filename, 'w') as f:
-        f.write(input_content)   
-    subprocess.run([rk4_path, input_filename, result_filename])
+        f.write(input_content)  
+    res = subprocess.check_output([rk4_path, input_filename, result_filename, experiment_data_path])
+    simulation_result = np.genfromtxt([res], delimiter=',')
+    '''
+    result formatted as:
+    "%e,%e\n":std, time_of_computation
+    '''
+    group_order = index + 1
+    if (group_order % log_interval == 0):
+        current_time = time.time()
+        print('After {0:.3} seconds, one case in group {1:} finished.'.format(current_time - program_start_time ,group_order))
+    if os.path.exists(input_filename):
+        os.remove(input_filename)
+    if os.path.exists(result_filename):
+        os.remove(result_filename)
+    return [index, simulation_result]
 
+def save_result(result_filename, std_summary):
+    np.savetxt(result_filename, std_summary, delimiter=',',
+    header='k1,k2,k3,k4,k5,std_1,std_2,time_of_computation_1,time_of_computation_2',
+    comments='')
 '''
 2. read in experiment data
 '''
@@ -63,35 +89,50 @@ def run_simulation(input_content, input_filename, result_filename):
 '''
 3.1 random sampling based on uniform distribution
 '''
-print('Program starts...\n')
 #with Pool(processes=number_of_process) as pool:
 '''
 The 'with' statement would not work. Why???
 '''
 pool = Pool(number_of_process)
-for i in range(16):
+results = [[],[]]
+program_start_time = time.time()
+for i in range(number_of_iteration):
     sample = np.random.uniform(lower_bound_of_k, upper_bound_of_k, size=5)
-    input_content = '{:.2}\n{:.2}\n{:.2}\n{:.2}\n{:.2}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
-                                                                                    sample[0],
-                                                                                    sample[1],
-                                                                                    sample[2],
-                                                                                    sample[3],
-                                                                                    sample[4], 
-                                                                                    length_of_optical_cell,
-                                                                                    concentration_of_NO,
-                                                                                    concentration_of_sGC,
-                                                                                    concentration_of_6C,
-                                                                                    concentration_of_5C,
-                                                                                    start_time, end_time,
-                                                                                    eps,
-                                                                                    h1,
-                                                                                    hmin)
-    input_filename = 'input{}.txt'.format(i)
-    result_filename = 'result{}.csv'.format(i)
-    pool.apply_async(run_simulation, (input_content, input_filename, result_filename,))#notice the comma at the end of the tuple in the second parameter!!!!!!!
+    sample_of_k [i,:] = sample
+    for j in range(2):
+        input_content = '{:.2}\n{:.2}\n{:.2}\n{:.2}\n{:.2}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
+                                                                                        sample[0],
+                                                                                        sample[1],
+                                                                                        sample[2],
+                                                                                        sample[3],
+                                                                                        sample[4], 
+                                                                                        length_of_optical_cell,
+                                                                                        concentration_of_NO[j],
+                                                                                        concentration_of_sGC[j],
+                                                                                        concentration_of_6C,
+                                                                                        concentration_of_5C,
+                                                                                        start_time, end_time,
+                                                                                        eps,
+                                                                                        h1,
+                                                                                        hmin)                                                                              
+        input_filename = 'input{0:}.{1:}.txt'.format(i, j)
+        result_filename = 'result{0:}.{1:}.csv'.format(i, j)
+        res = pool.apply_async(run_simulation, (input_content, input_filename, result_filename, 
+        experiment_data_path[j], i, sample, program_start_time))#notice the comma at the end of the tuple in the second parameter!!!!!!!
+        results[j].append(res)
 pool.close()
 pool.join()
 
+for i in range(2):
+    for res in results[i]:
+        entry = res.get()
+        if i == 0:
+            std_summary[entry[0], 0:5] = sample_of_k[entry[0],:]
+        std_summary[entry[0], [5+i, 7+i]] = entry[1]
+
+save_result(std_summary_filename, std_summary)
+program_end_time = time.time()
+print('The program takes {:.3f} seconds to complete.'.format(program_end_time - program_start_time))
 '''
 3.4 read the simulation result
 '''
