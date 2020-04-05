@@ -1,3 +1,0 @@
-/home/u24658ly/projects/rk4/build/CMakeFiles/rebuild_cache.dir
-/home/u24658ly/projects/rk4/build/CMakeFiles/rk4.dir
-/home/u24658ly/projects/rk4/build/CMakeFiles/edit_cache.dir

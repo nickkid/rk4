@@ -45,6 +45,8 @@ const double length = 1;
 */
 double k1, k2, k3, k4, k5, length;
 const double epsilons[] = {124e3, 66e3, 46e3};
+void init(char*);
+void init_parameter(char* []);
 void init(char* input_file)
 {
     nok = 0;
@@ -86,6 +88,39 @@ void init(char* input_file)
     printf("xp created.\n");
     #endif
     fclose(file);
+}
+
+void init_parameter(char* argv[])
+{
+    nok = 0;
+    nbad = 0;
+    kount = 0;
+    kmax = 10000000;
+    yp = matrix(1, nvar, 1, kmax);
+    vstart = vector(1, nvar);
+
+    //initial concentrations
+    sscanf(argv[1], "%lf", &k1);
+    sscanf(argv[2], "%lf", &k2);
+    sscanf(argv[3], "%lf", &k3);
+    sscanf(argv[4], "%lf", &k4);
+    sscanf(argv[5], "%lf", &k5);
+    sscanf(argv[6], "%lf", &length);
+    sscanf(argv[7], "%lf", &vstart[1]); //vstart[1] = [NO]
+    sscanf(argv[8], "%lf", &vstart[2]); //vstart[2] = [sGC]
+    sscanf(argv[9], "%lf", &vstart[3]); //vstart[3] = [6C-sGC-NO]
+    sscanf(argv[10], "%lf", &vstart[4]); //vstart[4] = [5C-sGC-NO]
+    //start and end time of simulation
+    sscanf(argv[11], "%lf", &x1);
+    sscanf(argv[12], "%lf", &x2);
+    sscanf(argv[13], "%lf", &eps);
+    sscanf(argv[14], "%lf", &h1);
+    sscanf(argv[15], "%lf", &hmin);
+
+    xp = vector(1, kmax);
+    #ifdef DEBUG
+    printf("xp created.\n");
+    #endif
 }
 
 void save_results(char* filename)
@@ -145,8 +180,17 @@ int main(int argc, char *argv[])
     #ifdef DEBUG
     printf("In main.\n");
     #endif
-
-    init(argv[1]);
+    if (argc == 3 || argc == 4)
+        init(argv[1]);
+    else if (argc == 17)
+    {
+        init_parameter(argv);
+        data = loadcsv(argv[16]);
+    }
+    else
+        fprintf(stderr, "wrong commond.\n");
+    
+    
     #ifdef DEBUG
         printf("k1 = %lf\nk2 = %lf\nk3 = %lf\nk4 = %lf\nk5 = %lf\nlength = %lf\n",
         k1, k2, k3, k4, k5, length);
